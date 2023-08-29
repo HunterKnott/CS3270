@@ -38,12 +38,12 @@ for year in entries_by_year:
 '''Simplify year entries to only the prices'''
 for year in entries_by_year:
     for entry in year:
-        entries_by_year[entries_by_year.index(year)][year.index(entry)] = entries_by_year[entries_by_year.index(year)][year.index(entry)][entry.index(":") + 1:]
+        entries_by_year[entries_by_year.index(year)][year.index(entry)] = float(entries_by_year[entries_by_year.index(year)][year.index(entry)][entry.index(":") + 1:])
 
 '''Print out results'''
 for year in years:
     print(year + ":")
-    print("Low: $" + "___" + ", Avg: $" + "___" + ", High: $" + "___")
+    print("Low: $" + "{:.2f}".format(float(min(entries_by_year[years.index(year)]))) + ", Avg: $" + "{:.2f}".format( sum(entries_by_year[years.index(year)]) / len(entries_by_year[years.index(year)])) + ", High: $" + "{:.2f}".format(float(max(entries_by_year[years.index(year)]))))
     # current_year = 0
     # years_passed = []
     # weekly_entries = []
