@@ -32,7 +32,8 @@ for year in entries_by_year:
     for entry in year:
         if len(prices) < int(entry[:entry.index("-")]):
             prices.append([])
-        prices[len(prices) - 1].append(entry[entry.index(":") + 1:])
+        prices[len(prices) - 1].append(float(entry[entry.index(":") + 1:]))
+    averages_by_month.append(prices)
     prices = []
 
 '''Simplify year entries to only the prices'''
@@ -44,27 +45,5 @@ for year in entries_by_year:
 for year in years:
     print(year + ":")
     print("Low: $" + "{:.2f}".format(float(min(entries_by_year[years.index(year)]))) + ", Avg: $" + "{:.2f}".format( sum(entries_by_year[years.index(year)]) / len(entries_by_year[years.index(year)])) + ", High: $" + "{:.2f}".format(float(max(entries_by_year[years.index(year)]))))
-    # current_year = 0
-    # years_passed = []
-    # weekly_entries = []
-    # averages = []
-    # for line in gas_file:
-    #     current_year = line[line.index("-") + 4 :line.index(":")]
-    #     weekly_entries.append(float(line[line.index(":") + 1 :]))
-    #     if len(averages) == int(line[:line.index("-")]) - 1:
-    #         averages.append([])
-    #     averages[int(line[:line.index("-")]) - 1].append(weekly_entries[len(weekly_entries) - 1])
-    #     if not years_passed:
-    #         years_passed.append(current_year)
-    #         print(current_year)
-    #     if current_year not in years_passed:
-    #         print("Low: $" + "{:.2f}".format(min(weekly_entries)) + ", Avg: $" + "{:.2f}".format( sum(weekly_entries) / len(weekly_entries) ) + ", High: $" + "{:.2f}".format(max(weekly_entries)))
-    #         for i in range(len(months)):
-    #             # print(months[i] + " $" + "{:.2f}".format(sum(averages[i]) / len(averages[i])))
-    #             print(months[i] + " $" + str(averages[i]))
-    #         weekly_entries = []
-    #         averages = []
-    #         years_passed.append(current_year)
-    #         print(current_year)
-    # print("Low: $" + "{:.2f}".format(min(weekly_entries)) + ", Avg: $" + "{:.2f}".format( sum(weekly_entries) / len(weekly_entries) ) + ", High: $" + "{:.2f}".format(max(weekly_entries)))
-    # print(months[i] + " $" + str(averages[i]))
+    for month in months:
+        print(month + ":" + "{:.2f}".format(sum(averages_by_month[years.index(year)][months.index(month)]) / len(averages_by_month[years.index(year)][months.index(month)] )))
