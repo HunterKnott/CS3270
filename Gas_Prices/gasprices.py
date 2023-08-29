@@ -1,7 +1,5 @@
 '''Examines weekly gas prices from 1994 to 2012'''
 
-months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
 '''Read all file lines into a list'''
 entries = []
 with open('gas_prices.txt') as gas_file:
@@ -26,7 +24,6 @@ for year in years:
 
 '''Separate year entries into lists by month'''
 averages_by_month = []
-month_sums = []
 for year in entries_by_year:
     prices = []
     for entry in year:
@@ -42,8 +39,10 @@ for year in entries_by_year:
         entries_by_year[entries_by_year.index(year)][year.index(entry)] = float(entries_by_year[entries_by_year.index(year)][year.index(entry)][entry.index(":") + 1:])
 
 '''Print out results'''
+months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 for year in years:
     print(year + ":")
-    print("Low: $" + "{:.2f}".format(float(min(entries_by_year[years.index(year)]))) + ", Avg: $" + "{:.2f}".format( sum(entries_by_year[years.index(year)]) / len(entries_by_year[years.index(year)])) + ", High: $" + "{:.2f}".format(float(max(entries_by_year[years.index(year)]))))
+    print("    Low: $" + "{:.2f}".format(float(min(entries_by_year[years.index(year)]))) + ", Avg: $" + "{:.2f}".format( sum(entries_by_year[years.index(year)]) / len(entries_by_year[years.index(year)])) + ", High: $" + "{:.2f}".format(float(max(entries_by_year[years.index(year)]))))
     for month in months:
-        print(month + ":" + "{:.2f}".format(sum(averages_by_month[years.index(year)][months.index(month)]) / len(averages_by_month[years.index(year)][months.index(month)] )))
+        print("    " + month + ":" + " " * (10 - len(month)) + "{:.2f}".format(sum(averages_by_month[years.index(year)][months.index(month)]) / len(averages_by_month[years.index(year)][months.index(month)] )))
+    print("\n")
