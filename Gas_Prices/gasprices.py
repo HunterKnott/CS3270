@@ -33,9 +33,17 @@ for year in entries_by_year:
         if len(prices) < int(entry[:entry.index("-")]):
             prices.append([])
         prices[len(prices) - 1].append(entry[entry.index(":") + 1:])
-    print(prices)
     prices = []
 
+'''Simplify year entries to only the prices'''
+for year in entries_by_year:
+    for entry in year:
+        entries_by_year[entries_by_year.index(year)][year.index(entry)] = entries_by_year[entries_by_year.index(year)][year.index(entry)][entry.index(":") + 1:]
+
+'''Print out results'''
+for year in years:
+    print(year + ":")
+    print("Low: $" + "___" + ", Avg: $" + "___" + ", High: $" + "___")
     # current_year = 0
     # years_passed = []
     # weekly_entries = []
