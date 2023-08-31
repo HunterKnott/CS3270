@@ -37,10 +37,12 @@ def main():
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     for year in years:
+        price_list = entries_by_year[years.index(year)]
         print(year + ":")
-        print("    Low: $" + "{:.2f}".format(float(min(entries_by_year[years.index(year)]))) + ", Avg: $" + "{:.2f}".format( sum(entries_by_year[years.index(year)]) / len(entries_by_year[years.index(year)])) + ", High: $" + "{:.2f}".format(float(max(entries_by_year[years.index(year)]))))
+        print("    Low: $" + "{:.2f}".format(float(min(price_list))) + ", Avg: $" + "{:.2f}".format( sum(price_list) / len(price_list)) + ", High: $" + "{:.2f}".format(float(max(price_list))))
         for month in months:
-            print("    " + month + ":" + " " * (10 - len(month)) + "$" + "{:.2f}".format(sum(averages_by_month[years.index(year)][months.index(month)]) / len(averages_by_month[years.index(year)][months.index(month)] )))
+            month_price_list = averages_by_month[years.index(year)][months.index(month)]
+            print("    " + month + ":" + " " * (10 - len(month)) + "$" + "{:.2f}".format(sum(month_price_list) / len(month_price_list )))
         print("\n")
 
 if __name__ == '__main__':
