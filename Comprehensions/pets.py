@@ -31,7 +31,7 @@ pets.add(Pet("Sylvia", "Marvin"))
 pets.add(Pet("Daphne", "Muffin"))
 
 def main():
-    '''Uses set comprehensions to perform queries'''
+    '''Uses set comprehensions to run queries'''
     # Query 1: What kinds of pets does Sylvia have?
     # Answer: Elephant and Mouse
 
