@@ -65,11 +65,16 @@ def main():
     # 4. Get names and colors of all parts not used in Oslo
     oslo_projects = {j.jno for j in projects if j.city == 'Oslo'}
     oslo_supp_ids = {p.pno for p in orders if p.jno in oslo_projects}
-    oslo_part_names = {tuple([p.pname, p.color]) for p in parts if p.pno in oslo_supp_ids}
-    non_oslo_part_names = {tuple([p.pname, p.color]) for p in parts if tuple([p.pname, p.color]) not in oslo_part_names}
-    print(non_oslo_part_names)
+    oslo_part_entries = {tuple([p.pname, p.color]) for p in parts if p.pno in oslo_supp_ids}
+    non_oslo_part_entries = {tuple([p.pname, p.color]) for p in parts if tuple([p.pname, p.color]) not in oslo_part_entries}
+    print(non_oslo_part_entries)
 
     # 5. Get pairs of names of all suppliers that are located in the same city.
+    supplier_pairs = {(s1.sname, s2.sname)
+        for s1 in suppliers for s2 in suppliers
+        if s1.city == s2.city and s1.sname < s2.sname}
+    print(supplier_pairs)
+
     # 6. Print all suppliers out by city
 
 if __name__ == '__main__':
