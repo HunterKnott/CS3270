@@ -38,11 +38,6 @@ for line in lines[2:]:
     orders.add(Order(entry[0], entry[1], entry[2], entry[3]))
 
 def main():
-    # 0. Get names of all suppliers for projects in London
-    london_projs = {j.jno for j in projects if j.city == 'London'} # Get list of all London jno's
-    london_supp_ids = {r.sno for r in orders if r.jno in london_projs}
-    london_supps = {s.sname for s in suppliers if s.sno in london_supp_ids}
-    
     # 1. Get names of all suppliers that supply bolts.
     bolt_parts = {p.pno for p in parts if p.pname == 'Bolt'}
     bolt_supp_ids = {q.sno for q in orders if q.pno in bolt_parts}
