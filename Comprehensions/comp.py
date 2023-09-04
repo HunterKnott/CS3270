@@ -76,6 +76,9 @@ def main():
     print(supplier_pairs)
 
     # 6. Print all suppliers out by city
+    city_suppliers = {s.city: {r.sname for r in suppliers
+        if tuple([r.city, s.sname]) == tuple([s.city, s.sname])} for s in suppliers}
+    print(city_suppliers)
 
 if __name__ == '__main__':
     main()
