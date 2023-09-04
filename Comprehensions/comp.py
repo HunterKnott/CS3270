@@ -56,7 +56,13 @@ def main():
     print(blue_supps)
 
     # 3. Get names of all suppliers not used in Athens projects
-    
+    athens_projs = {j.jno for j in projects if j.city == 'Athens'}
+    non_athens_projs = {j.jno for j in projects if j.city != 'Athens'}
+    athens_supp_ids = {r.sno for r in orders if r.jno in athens_projs}
+    non_athens_supp_ids = {r.sno for r in orders if r.jno in non_athens_projs}
+    non_athens_supp_ids = {id for id in non_athens_supp_ids if id not in athens_supp_ids}
+    non_athens_supps = {s.sname for s in suppliers if s.sno in non_athens_supp_ids}
+    print(non_athens_supps)
 
     # 4. Get names and colors of all parts not used in Oslo
     # 5. Get pairs of names of all suppliers that are located in the same city.
