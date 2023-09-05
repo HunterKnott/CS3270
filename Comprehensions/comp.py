@@ -1,7 +1,7 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 from collections import namedtuple
 
-def create_set(file_name):
+def read_file(file_name):
     data = set()
     with open(file_name) as data_file:
         lines = [line.strip() for line in data_file.readlines()]
@@ -13,10 +13,10 @@ def create_set(file_name):
     return data
 
 def main():
-    parts = create_set('parts.txt')
-    projects = create_set('projects.txt')
-    suppliers = create_set('suppliers.txt')
-    orders = create_set('spj.txt')
+    parts = read_file('parts.txt')
+    projects = read_file('projects.txt')
+    suppliers = read_file('suppliers.txt')
+    orders = read_file('spj.txt')
 
     # 1. Get names of all suppliers that supply bolts.
     bolt_parts = {p.pno for p in parts if p.pname == 'Bolt'}
