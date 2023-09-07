@@ -59,5 +59,13 @@ def main():
     print('Standard Deviation of mA: ' + str(sta_dev(method_A)))
     print('Standard Deviation of mB: ' + str(sta_dev(method_B)))
 
+    import numpy as np
+    import statistics
+    import random
+
+    x = [10, 20, 16, 12, 1, 0, 27]
+    n = len(x)
+    print(n)
+
 if __name__ == '__main__':
     main()

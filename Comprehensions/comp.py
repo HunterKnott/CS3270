@@ -3,8 +3,12 @@ from collections import namedtuple
 
 def read_file(file_name):
     data = set()
-    with open(file_name) as data_file:
-        lines = [line.strip() for line in data_file.readlines()]
+    try:
+        with open(file_name) as data_file:
+            lines = [line.strip() for line in data_file.readlines()]
+    except FileNotFoundError:
+        message = 'The file ' + str(file_name) + ' does not exist'
+        print(message)
     headers = lines[1].split(',')
     Instance = namedtuple(lines[0], [*headers])
     for line in lines[2:]:
