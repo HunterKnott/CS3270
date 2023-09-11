@@ -1,0 +1,11 @@
+fib((1,), {})Result: 1
+fib((0,), {})Result: 0
+fib((2,), {})Result: 1
+fib((3,), {})Result: 2
+fib((4,), {})Result: 3
+fib((5,), {})Result: 5
+fib((6,), {})Result: 8
+fib((7,), {})Result: 13
+fib((8,), {})Result: 21
+fib((9,), {})Result: 34
+fib((10,), {})Result: 55
