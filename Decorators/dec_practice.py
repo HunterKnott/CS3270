@@ -1,4 +1,3 @@
-# Part b
 from timeit import default_timer as timer
 import time as _time
 
