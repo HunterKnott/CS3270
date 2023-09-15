@@ -2,17 +2,16 @@
 
 def track(f):
     cache = {}
-    f.count = 0
     def wrapper(*args, **kwargs):
         key = str(args) + str(kwargs)
         if key in cache:
             return cache[key]
         result = f(*args, **kwargs)
         cache[key] = result
-        f.count += 1
-        wrapper.count = f.count
         print(key + ' found in cache')
+        wrapper.count += 1
         return result
+    wrapper.count = 0
     return wrapper
 
 def log(f):
