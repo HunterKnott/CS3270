@@ -1,69 +1,37 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
-class Order():
-    def __init__(self, order_id, order_date, cust_id, payment):
-        str(order_id)
-        self.__order_id = order_id
-        str(order_date)
-        self.__order_date = order_date
-        str(cust_id)
-        self.__cust_id = cust_id
-        # self.__line_items = LineItem()
-        self.__payment = payment
-    
-    def __str__(self):
-        return('')
-    
-    def total():
-        # Float, @property
-        pass
-
-    # Static read_orders(fname:string)
-
+@dataclass
 class Customer():
-    def __init__(self, cust_id, name, street, city, state, postal_code, phone, email):
-        str(cust_id)
-        self.__cust_id = cust_id
-        str(name)
-        self.__name = name
-        str(street)
-        self.__street = street
-        str(city)
-        self.__city = city
-        str(state)
-        self.__state = state
-        str(postal_code)
-        self.__postal_code = postal_code
-        str(phone)
-        self.__phone = phone
-        str(email)
-        self.__email = email
+    cust_id: str
+    name: str
+    street: str
+    city: str
+    state: str
+    postal_code: str
+    phone: str
+    email: str
     
     def __str__(self):
         return('')
     
     # Static read_customers(fname:string)
 
+@dataclass
 class LineItem():
-    def __init__(self, item_id, qty):
-        str(item_id)
-        self.__item_id = item_id
-        int(qty)
-        self.__qty = qty
+    item_id: str
+    qty: int
     
     def sub_total():
         # Float
         pass
 
+@dataclass
 class Item():
-    def __init__(self, item_id, description, price):
-        str(item_id)
-        self.__item_id = item_id
-        str(description)
-        self.__description = description
-        float(price)
-        self.__price = price
+    item_id: str
+    description: str
+    price: float
     
     # Static read_items(fname:string)
 
@@ -103,6 +71,23 @@ class WireTransfer(Payment):
     
     def __str__(self):
         return('')
+
+@dataclass
+class Order():
+    order_id: str
+    order_date: str
+    cust_id: str
+    line_items: LineItem()
+    payment: Payment()
+    
+    def __str__(self):
+        return('')
+    
+    def total():
+        # Float, @property
+        pass
+
+    # Static read_orders(fname:string)
 
 # Payment can't exist without Order. Order can only have 1 payment, and it needs 1
 # Customer can exist without Order. Order can only have 1 customer, and it needs one
