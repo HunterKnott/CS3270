@@ -14,7 +14,11 @@ class Customer():
     email: str
     
     def __str__(self):
-        return('')
+        return f'''Customer ID #{self.cust_id}:
+{self.name}, ph. {self.phone}, email: {self.email}
+{self.street}
+{self.city}, {self.state} {self.postal_code}
+'''
     
     @staticmethod
     def read_customers(fname:str):
@@ -35,9 +39,9 @@ class LineItem():
     item_id: str
     qty: int
     
-    def sub_total():
+    def sub_total(self):
         # Float
-        pass
+        return items[LineItem.item_id].price * LineItem.qty
 
 @dataclass
 class Item():
@@ -66,7 +70,7 @@ class Payment(ABC):
     
     @abstractmethod
     def __str__(self):
-        return f"{self.__amount}"
+        return ('')
 
 class Credit(Payment):
     def __init__(self, card_number, exp_date):
@@ -76,7 +80,7 @@ class Credit(Payment):
         self.__exp_date = exp_date
     
     def __str__(self):
-        return('')
+        return f'Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
 
 class PayPal(Payment):
     def __init__(self, paypal_id):
@@ -84,7 +88,7 @@ class PayPal(Payment):
         self.__paypal_id = paypal_id
     
     def __str__(self):
-        return('')
+        return f'Paid by Paypal ID: {self.__paypal_id}'
 
 class WireTransfer(Payment):
     def __init__(self, bank_id, account_id):
@@ -94,7 +98,7 @@ class WireTransfer(Payment):
         self.__account_id = account_id
     
     def __str__(self):
-        return('')
+        return f'Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
 
 @dataclass
 class Order():
@@ -105,11 +109,11 @@ class Order():
     payment: Payment
     
     def __str__(self):
-        return('')
+        return ('')
     
     @property
     def total():
-        return Payment.amount
+        return Order.amount
 
     @staticmethod
     def read_orders(fname:str):
@@ -147,6 +151,9 @@ def main():
     Customer.read_customers('customers.txt')
     Item.read_items('items.txt')
     Order.read_orders('orders.txt')
+
+    foo = Credit('984732943294', '01/01/2024')
+    print(foo)
 
 if __name__ == "__main__":
     main()
