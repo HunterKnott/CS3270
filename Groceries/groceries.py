@@ -16,7 +16,19 @@ class Customer():
     def __str__(self):
         return('')
     
-    # Static read_customers(fname:string)
+    @staticmethod
+    def read_customers(fname:str):
+        global customers
+        customers = {}
+        try:
+            with open(fname) as cust_file:
+                lines = [line.strip() for line in cust_file.readlines()]
+        except FileNotFoundError:
+            message = 'The file ' + str(fname) + ' does not exist'
+            print(message)
+        for line in lines:
+            line = line.split(',')
+            # Read values to dictionary
 
 @dataclass
 class LineItem():
@@ -33,7 +45,10 @@ class Item():
     description: str
     price: float
     
-    # Static read_items(fname:string)
+    @staticmethod
+    def read_items(fname:str):
+        global items
+        items = {}
 
 class Payment(ABC):
     def __init__(self, amount):
@@ -77,27 +92,26 @@ class Order():
     order_id: str
     order_date: str
     cust_id: str
-    line_items: LineItem()
-    payment: Payment()
+    line_items: list[LineItem]
+    payment: Payment
     
     def __str__(self):
         return('')
     
+    @property
     def total():
-        # Float, @property
-        pass
+        return Payment.amount
 
-    # Static read_orders(fname:string)
-
-# Payment can't exist without Order. Order can only have 1 payment, and it needs 1
-# Customer can exist without Order. Order can only have 1 customer, and it needs one
-# LineItem can't exist without Order. Order can have many line items, and it needs at least 1
-# Item can exist without LineItem. LineItem can have many items, and it needs at least 1
+    @staticmethod
+    def read_orders(fname:str):
+        global orders
+        orders = {}
+        # set payment amount
 
 def main():
-    WT = WireTransfer('63482484', '97432842')
-    O = Order('9834792874224', '01/01/2023', '9184384', WT)
-
+    Customer.read_customers('customers.txt')
+    Item.read_items('items.txt')
+    Order.read_orders('orders.txt')
 
 if __name__ == "__main__":
     main()
