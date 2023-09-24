@@ -28,7 +28,7 @@ class Customer():
             print(message)
         for line in lines:
             line = line.split(',')
-            # Read values to dictionary
+            customers[line[0]] = Customer(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7])
 
 @dataclass
 class LineItem():
@@ -49,6 +49,15 @@ class Item():
     def read_items(fname:str):
         global items
         items = {}
+        try:
+            with open(fname) as item_file:
+                lines = [line.strip() for line in item_file.readlines()]
+        except FileNotFoundError:
+            message = 'The file ' + str(fname) + ' does not exist'
+            print(message)
+        for line in lines:
+            line = line.split(',')
+            items[line[0]] = Item(line[0], line[1], line[2])
 
 class Payment(ABC):
     def __init__(self, amount):
@@ -106,6 +115,32 @@ class Order():
     def read_orders(fname:str):
         global orders
         orders = {}
+        try:
+            with open(fname) as order_file:
+                lines = [line.strip() for line in order_file.readlines()]
+        except FileNotFoundError:
+            message = 'The file ' + str(fname) + ' does not exist'
+            print(message)
+        lines_list = []
+        for line in lines:
+            lines_list.append(line.split(','))
+        order_tuples = [(lines_list[i], lines_list[i+1]) for i in range (0, len(lines_list), 2)]
+        for tuple in order_tuples:
+            entries = []
+            line_items = []
+            for item in tuple[0][3:]:
+                entries.append((item.split('-')))
+            for entry in entries:
+                line_items.append(LineItem(entry[0], entry[1]))
+
+            if tuple[1][0] == '1':
+                payment = Credit(tuple[1][1], tuple[1][2])
+            elif tuple[1][0] == '2':
+                payment = PayPal(tuple[1][1])
+            else:
+                payment = WireTransfer(tuple[1][1], tuple[1][2])
+
+            orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], line_items, payment)
         # set payment amount
 
 def main():
