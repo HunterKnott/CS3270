@@ -40,7 +40,6 @@ class LineItem():
     qty: int
     
     def sub_total(self):
-        # Float
         return items[LineItem.item_id].price * LineItem.qty
 
 @dataclass
@@ -70,7 +69,7 @@ class Payment(ABC):
     
     @abstractmethod
     def __str__(self):
-        return ('')
+        return f'Amount: $'
 
 class Credit(Payment):
     def __init__(self, card_number, exp_date):
@@ -80,7 +79,7 @@ class Credit(Payment):
         self.__exp_date = exp_date
     
     def __str__(self):
-        return f'Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
+        return f'Amount:, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
 
 class PayPal(Payment):
     def __init__(self, paypal_id):
@@ -112,8 +111,8 @@ class Order():
         return ('')
     
     @property
-    def total():
-        return Order.amount
+    def total(self):
+        return self.payment.amount
 
     @staticmethod
     def read_orders(fname:str):
@@ -131,11 +130,11 @@ class Order():
         order_tuples = [(lines_list[i], lines_list[i+1]) for i in range (0, len(lines_list), 2)]
         for tuple in order_tuples:
             entries = []
-            line_items = []
+            items = []
             for item in tuple[0][3:]:
                 entries.append((item.split('-')))
             for entry in entries:
-                line_items.append(LineItem(entry[0], entry[1]))
+                items.append(LineItem(entry[0], entry[1]))
 
             if tuple[1][0] == '1':
                 payment = Credit(tuple[1][1], tuple[1][2])
@@ -144,7 +143,7 @@ class Order():
             else:
                 payment = WireTransfer(tuple[1][1], tuple[1][2])
 
-            orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], line_items, payment)
+            orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], items, payment)
         # set payment amount
 
 def main():
@@ -152,7 +151,7 @@ def main():
     Item.read_items('items.txt')
     Order.read_orders('orders.txt')
 
-    foo = Credit('984732943294', '01/01/2024')
+    foo = Credit('9274493274832', '8273482348')
     print(foo)
 
 if __name__ == "__main__":
