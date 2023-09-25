@@ -40,7 +40,8 @@ class LineItem():
     qty: int
     
     def sub_total(self):
-        return items[LineItem.item_id].price * LineItem.qty
+        #subtotal for a single line. Add these together to get order total
+        return items[LineItem.item_id].price * self.qty
 
 @dataclass
 class Item():
@@ -69,7 +70,7 @@ class Payment(ABC):
     
     @abstractmethod
     def __str__(self):
-        return f'Amount: $'
+        return f'Amount: $_____'
 
 class Credit(Payment):
     def __init__(self, card_number, exp_date):
@@ -79,7 +80,7 @@ class Credit(Payment):
         self.__exp_date = exp_date
     
     def __str__(self):
-        return f'Amount:, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
+        return f'Amount: $_____, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
 
 class PayPal(Payment):
     def __init__(self, paypal_id):
@@ -87,7 +88,7 @@ class PayPal(Payment):
         self.__paypal_id = paypal_id
     
     def __str__(self):
-        return f'Paid by Paypal ID: {self.__paypal_id}'
+        return f'Amount: $_____, Paid by Paypal ID: {self.__paypal_id}'
 
 class WireTransfer(Payment):
     def __init__(self, bank_id, account_id):
@@ -97,7 +98,7 @@ class WireTransfer(Payment):
         self.__account_id = account_id
     
     def __str__(self):
-        return f'Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
+        return f'Amount: $_____, Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
 
 @dataclass
 class Order():
@@ -108,7 +109,14 @@ class Order():
     payment: Payment
     
     def __str__(self):
-        return ('')
+        order_header = f'''===========================
+Order #{self.order_id}, Date: {self.order_date}
+{self.payment}\n
+{customers[self.cust_id]}
+Order Details:
+'''
+        order_item_list = '\n        '.join(f'Item {item.item_id}: \"{items[item.item_id].description}\", {item.qty} @ {items[item.item_id].price}' for item in self.line_items)
+        return order_header + '        ' + order_item_list
     
     @property
     def total(self):
@@ -135,6 +143,8 @@ class Order():
                 entries.append((item.split('-')))
             for entry in entries:
                 items.append(LineItem(entry[0], entry[1]))
+                print(items[len(items) - 1])
+            print('==========================')
 
             if tuple[1][0] == '1':
                 payment = Credit(tuple[1][1], tuple[1][2])
@@ -151,8 +161,8 @@ def main():
     Item.read_items('items.txt')
     Order.read_orders('orders.txt')
 
-    foo = Credit('9274493274832', '8273482348')
-    print(foo)
+    # for o in orders.values():
+    #     print(o)
 
 if __name__ == "__main__":
     main()
