@@ -25,12 +25,7 @@ class Customer():
     def read_customers(fname:str):
         global customers
         customers = {}
-        try:
-            with open(fname) as cust_file:
-                lines = [line.strip() for line in cust_file.readlines()]
-        except FileNotFoundError:
-            message = 'The file ' + str(fname) + ' does not exist'
-            print(message)
+        lines = file_helper(fname)
         for line in lines:
             line = line.split(',')
             customers[line[0]] = Customer(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7])
@@ -41,7 +36,7 @@ class LineItem():
     qty: int
 
     def sub_total(self):
-        return items[LineItem.item_id].price * self.qty
+        return float(items[self.item_id].price) * int(self.qty)
 
 @dataclass
 class Item():
@@ -53,12 +48,7 @@ class Item():
     def read_items(fname:str):
         global items
         items = {}
-        try:
-            with open(fname) as item_file:
-                lines = [line.strip() for line in item_file.readlines()]
-        except FileNotFoundError:
-            message = 'The file ' + str(fname) + ' does not exist'
-            print(message)
+        lines = file_helper(fname)
         for line in lines:
             line = line.split(',')
             items[line[0]] = Item(line[0], line[1], line[2])
@@ -131,12 +121,7 @@ class Order():
     def read_orders(fname:str):
         global orders
         orders = {}
-        try:
-            with open(fname) as order_file:
-                lines = [line.strip() for line in order_file.readlines()]
-        except FileNotFoundError:
-            message = 'The file ' + str(fname) + ' does not exist'
-            print(message)
+        lines = file_helper(fname)
         lines_list = []
         for line in lines:
             lines_list.append(line.split(','))
@@ -158,9 +143,18 @@ class Order():
             else:
                 payment = WireTransfer(tuple[1][1], tuple[1][2])
 
-            total = "{:.2f}".format(sum(float(items[item.item_id].price) * int(item.qty) for item in order_items))
+            total = "{:.2f}".format(sum(float(item.sub_total()) for item in order_items))
             payment.amount = total
             orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], order_items, payment)
+
+def file_helper(file_name:str):
+    try:
+        with open(file_name) as file:
+            lines = [line.strip() for line in file.readlines()]
+    except FileNotFoundError:
+        message = 'The file ' + str(file_name) + ' does not exist'
+        print(message)
+    return lines
 
 def main():
     Customer.read_customers('customers.txt')
