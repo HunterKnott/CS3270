@@ -116,7 +116,7 @@ Order #{self.order_id}, Date: {self.order_date}
 Order Details:
 '''
         order_item_list = '\n        '.join(f'Item {item.item_id}: \"{items[item.item_id].description}\", {item.qty} @ {items[item.item_id].price}' for item in self.line_items)
-        return order_header + '        ' + order_item_list
+        return order_header + '        ' + order_item_list + '\n'
     
     @property
     def total(self):
@@ -143,8 +143,7 @@ Order Details:
                 entries.append((item.split('-')))
             for entry in entries:
                 items.append(LineItem(entry[0], entry[1]))
-                print(items[len(items) - 1])
-            print('==========================')
+            items = sorted(items, key=lambda x: x.item_id)
 
             if tuple[1][0] == '1':
                 payment = Credit(tuple[1][1], tuple[1][2])
@@ -161,8 +160,8 @@ def main():
     Item.read_items('items.txt')
     Order.read_orders('orders.txt')
 
-    # for o in orders.values():
-    #     print(o)
+    for o in orders.values():
+        print(o)
 
 if __name__ == "__main__":
     main()
