@@ -12,14 +12,15 @@ class Customer():
     postal_code: str
     phone: str
     email: str
-    
+
     def __str__(self):
-        return f'''Customer ID #{self.cust_id}:
-{self.name}, ph. {self.phone}, email: {self.email}
-{self.street}
-{self.city}, {self.state} {self.postal_code}
-'''
-    
+        return (
+            f'Customer ID #{self.cust_id}:\n'
+            f'{self.name}, ph. {self.phone}, email: {self.email}\n'
+            f'{self.street}\n'
+            f'{self.city}, {self.state} {self.postal_code}'
+        )
+
     @staticmethod
     def read_customers(fname:str):
         global customers
@@ -38,9 +39,8 @@ class Customer():
 class LineItem():
     item_id: str
     qty: int
-    
+
     def sub_total(self):
-        #subtotal for a single line. Add these together to get order total
         return items[LineItem.item_id].price * self.qty
 
 @dataclass
@@ -67,7 +67,7 @@ class Payment(ABC):
     def __init__(self, amount):
         float(amount)
         self.amount = amount
-    
+
     @abstractmethod
     def __str__(self):
         return f'Amount: ${self.amount}'
@@ -107,17 +107,22 @@ class Order():
     cust_id: str
     line_items: list[LineItem]
     payment: Payment
-    
+
     def __str__(self):
-        order_header = f'''===========================
-Order #{self.order_id}, Date: {self.order_date}
-{self.payment}\n
-{customers[self.cust_id]}
-Order Details:
-'''
-        order_item_list = '\n        '.join(f'Item {item.item_id}: \"{items[item.item_id].description}\", {item.qty} @ {items[item.item_id].price}' for item in self.line_items)
+        order_header = (
+            f'===========================\n'
+            f'Order #{self.order_id}, Date: {self.order_date}\n'
+            f'{self.payment}\n\n'
+            f'{customers[self.cust_id]}\n\n'
+            f'Order Details:\n'
+        )
+        
+        order_item_list = '\n        '.join(
+            f'Item {item.item_id}: "{items[item.item_id].description}", {item.qty} @ {items[item.item_id].price}'
+            for item in self.line_items
+        )
         return order_header + '        ' + order_item_list + '\n\n'
-    
+
     @property
     def total(self):
         return self.payment.amount
