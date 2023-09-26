@@ -66,11 +66,11 @@ class Item():
 class Payment(ABC):
     def __init__(self, amount):
         float(amount)
-        self.__amount = amount
+        self.amount = amount
     
     @abstractmethod
     def __str__(self):
-        return f'Amount: $_____'
+        return f'Amount: ${self.amount}'
 
 class Credit(Payment):
     def __init__(self, card_number, exp_date):
@@ -80,7 +80,7 @@ class Credit(Payment):
         self.__exp_date = exp_date
     
     def __str__(self):
-        return f'Amount: $_____, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
+        return f'Amount: ${self.amount}, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
 
 class PayPal(Payment):
     def __init__(self, paypal_id):
@@ -88,7 +88,7 @@ class PayPal(Payment):
         self.__paypal_id = paypal_id
     
     def __str__(self):
-        return f'Amount: $_____, Paid by Paypal ID: {self.__paypal_id}'
+        return f'Amount: ${self.amount}, Paid by Paypal ID: {self.__paypal_id}'
 
 class WireTransfer(Payment):
     def __init__(self, bank_id, account_id):
@@ -98,7 +98,7 @@ class WireTransfer(Payment):
         self.__account_id = account_id
     
     def __str__(self):
-        return f'Amount: $_____, Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
+        return f'Amount: ${self.amount}, Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
 
 @dataclass
 class Order():
@@ -116,7 +116,7 @@ Order #{self.order_id}, Date: {self.order_date}
 Order Details:
 '''
         order_item_list = '\n        '.join(f'Item {item.item_id}: \"{items[item.item_id].description}\", {item.qty} @ {items[item.item_id].price}' for item in self.line_items)
-        return order_header + '        ' + order_item_list + '\n'
+        return order_header + '        ' + order_item_list + '\n\n'
     
     @property
     def total(self):
@@ -138,12 +138,13 @@ Order Details:
         order_tuples = [(lines_list[i], lines_list[i+1]) for i in range (0, len(lines_list), 2)]
         for tuple in order_tuples:
             entries = []
-            items = []
+            order_items = []
+            total = 0
             for item in tuple[0][3:]:
                 entries.append((item.split('-')))
             for entry in entries:
-                items.append(LineItem(entry[0], entry[1]))
-            items = sorted(items, key=lambda x: x.item_id)
+                order_items.append(LineItem(entry[0], entry[1]))
+            order_items = sorted(order_items, key=lambda x: x.item_id)
 
             if tuple[1][0] == '1':
                 payment = Credit(tuple[1][1], tuple[1][2])
@@ -152,16 +153,18 @@ Order Details:
             else:
                 payment = WireTransfer(tuple[1][1], tuple[1][2])
 
-            orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], items, payment)
-        # set payment amount
+            total = "{:.2f}".format(sum(float(items[item.item_id].price) * int(item.qty) for item in order_items))
+            payment.amount = total
+            orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], order_items, payment)
 
 def main():
     Customer.read_customers('customers.txt')
     Item.read_items('items.txt')
     Order.read_orders('orders.txt')
 
-    for o in orders.values():
-        print(o)
+    with open('order_report.txt', 'w') as report_file:
+        for o in orders.values():
+            report_file.write(str(o))
 
 if __name__ == "__main__":
     main()
