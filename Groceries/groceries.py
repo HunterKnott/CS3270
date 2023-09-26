@@ -24,11 +24,8 @@ class Customer():
     @staticmethod
     def read_customers(fname:str):
         global customers
-        customers = {}
         lines = file_helper(fname)
-        for line in lines:
-            line = line.split(',')
-            customers[line[0]] = Customer(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7])
+        customers = {line[0]: Customer(*line) for line in lines}
 
 @dataclass
 class LineItem():
@@ -47,11 +44,8 @@ class Item():
     @staticmethod
     def read_items(fname:str):
         global items
-        items = {}
         lines = file_helper(fname)
-        for line in lines:
-            line = line.split(',')
-            items[line[0]] = Item(line[0], line[1], line[2])
+        items = {line[0]: Item(*line) for line in lines}
 
 class Payment(ABC):
     def __init__(self, amount):
@@ -121,10 +115,7 @@ class Order():
     def read_orders(fname:str):
         global orders
         orders = {}
-        lines = file_helper(fname)
-        lines_list = []
-        for line in lines:
-            lines_list.append(line.split(','))
+        lines_list = file_helper(fname)
         order_tuples = [(lines_list[i], lines_list[i+1]) for i in range (0, len(lines_list), 2)]
         for tuple in order_tuples:
             entries = []
@@ -154,6 +145,7 @@ def file_helper(file_name:str):
     except FileNotFoundError:
         message = 'The file ' + str(file_name) + ' does not exist'
         print(message)
+    lines = [line.split(',') for line in lines]
     return lines
 
 def main():
