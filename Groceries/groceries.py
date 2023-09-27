@@ -40,7 +40,7 @@ class Item():
     item_id: str
     description: str
     price: float
-    
+
     @staticmethod
     def read_items(fname:str):
         global items
@@ -62,7 +62,7 @@ class Credit(Payment):
         self.__card_number = card_number
         str(exp_date)
         self.__exp_date = exp_date
-    
+
     def __str__(self):
         return f'Amount: ${self.amount}, Paid by Credit card {self.__card_number}, exp. {self.__exp_date}'
 
@@ -70,7 +70,7 @@ class PayPal(Payment):
     def __init__(self, paypal_id):
         str(paypal_id)
         self.__paypal_id = paypal_id
-    
+
     def __str__(self):
         return f'Amount: ${self.amount}, Paid by Paypal ID: {self.__paypal_id}'
 
@@ -80,7 +80,7 @@ class WireTransfer(Payment):
         self.__bank_id = bank_id
         str(account_id)
         self.__account_id = account_id
-    
+
     def __str__(self):
         return f'Amount: ${self.amount}, Paid by Wire Transfer from Bank ID {self.__bank_id}, Account# {self.__account_id}'
 
@@ -100,7 +100,7 @@ class Order():
             f'{customers[self.cust_id]}\n\n'
             f'Order Details:\n'
         )
-        
+
         order_item_list = '\n        '.join(
             f'Item {item.item_id}: "{items[item.item_id].description}", {item.qty} @ {items[item.item_id].price}'
             for item in self.line_items
@@ -115,16 +115,11 @@ class Order():
     def read_orders(fname:str):
         global orders
         orders = {}
-        lines_list = file_helper(fname)
-        order_tuples = [(lines_list[i], lines_list[i+1]) for i in range (0, len(lines_list), 2)]
+        lines = file_helper(fname)
+        order_tuples = [(lines[i], lines[i+1]) for i in range (0, len(lines), 2)]
         for tuple in order_tuples:
-            entries = []
-            order_items = []
-            total = 0
-            for item in tuple[0][3:]:
-                entries.append((item.split('-')))
-            for entry in entries:
-                order_items.append(LineItem(entry[0], entry[1]))
+            entries = [item.split('-') for item in tuple[0][3:]]
+            order_items = [LineItem(entry[0], entry[1]) for entry in entries]
             order_items = sorted(order_items, key=lambda x: x.item_id)
 
             if tuple[1][0] == '1':
@@ -134,8 +129,7 @@ class Order():
             else:
                 payment = WireTransfer(tuple[1][1], tuple[1][2])
 
-            total = "{:.2f}".format(sum(float(item.sub_total()) for item in order_items))
-            payment.amount = total
+            payment.amount = "{:.2f}".format(sum(float(item.sub_total()) for item in order_items))
             orders[tuple[0][1]] = Order(tuple[0][1], tuple[0][2], tuple[0][0], order_items, payment)
 
 def file_helper(file_name:str):
@@ -154,8 +148,7 @@ def main():
     Order.read_orders('orders.txt')
 
     with open('order_report.txt', 'w') as report_file:
-        for o in orders.values():
-            report_file.write(str(o))
+        [report_file.write(str(o)) for o in orders.values()]
 
 if __name__ == "__main__":
     main()
