@@ -1,0 +1,140 @@
+PS C:\Users\10869\Documents\Projects\Python\wordgame> python3 wordgame.py
+Enter the range for word length (min, max): 3,5
+
+hcnai:
+
+3 ['---', '---', '---']
+4 ['----', '----']
+5 ['-----', '-----']
+
+Enter a guess: can
+Correct!
+
+ainch:
+
+3 ['---', 'can', '---']
+4 ['----', '----']
+5 ['-----', '-----']
+
+Enter a guess: acni
+Sorry, try again
+
+hcnai:
+
+3 ['---', 'can', '---']
+4 ['----', '----']
+5 ['-----', '-----']
+
+Enter a guess: achni
+Sorry, try again
+
+ihacn:
+
+3 ['---', 'can', '---']
+4 ['----', '----']
+5 ['-----', '-----']
+
+Enter a guess: china
+Correct!
+
+anich:
+
+3 ['---', 'can', '---']
+4 ['----', '----']
+5 ['-----', 'china']
+
+Enter a guess: inch
+Correct!
+
+hican:
+
+3 ['---', 'can', '---']
+4 ['----', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: chin
+Correct!
+
+hniac:
+
+3 ['---', 'can', '---']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: ach
+Sorry, try again
+
+ciahn:
+
+3 ['---', 'can', '---']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: chi
+Correct!
+
+chnai:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: cha
+Sorry, try again
+
+cahin:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: han
+Sorry, try again
+
+ihcna:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: ain
+Sorry, try again
+
+nciah:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: ach
+Sorry, try again
+
+cnhia:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: cai
+Sorry, try again
+
+ahcni:
+
+3 ['---', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: ani
+Correct!
+
+ihacn:
+
+3 ['ani', 'can', 'chi']
+4 ['chin', 'inch']
+5 ['-----', 'china']
+
+Enter a guess: chain
+Correct!
+['ani', 'can', 'chi', 'chin', 'inch', 'chain', 'china']
+
+Good job! You got all the words.

@@ -4,6 +4,7 @@ import itertools
 import random
 import collections
 
+# Puts file contents into a list
 def read_words(file_name):
     try:
         with open(file_name, 'r') as word_file:
@@ -15,6 +16,7 @@ def read_words(file_name):
 def main():
     words = read_words('words.txt')
 
+    # Checks to see if command line word was given or not
     if len(sys.argv) == 2 and sys.argv[1] in words:
         word = sys.argv[1]
         min_length, max_length = 3, len(word)
@@ -28,18 +30,20 @@ def main():
         filter_words = [w for w in words if min_length <= len(w) <= max_length]
         word = random.choice(filter_words)
 
+    # Make list of all permutations of the base word
     word_chars = list(word)
-
     sub_words = []
     word_counter = collections.Counter(word_chars)
     for w in words:
         w_counter = collections.Counter(w)
-        if all(w_counter[c] <= word_counter[c] for c in w) and min_length <= len(w) <= max_length:
+        if all(w_counter[c] <= word_counter[c] for c in w) and (min_length <= len(w) <= max_length):
             sub_words.append(w)
 
+    # Group permutations by length
     sub_words.sort(key=len)
     sub_words_grouped = {key: list(group) for key, group in itertools.groupby(sub_words, key=len)}
-    
+
+    # Make separated list of spaces for game display
     word_spaces = {}
     for length, words_group in sub_words_grouped.items():
         word_spaces[length] = ['-' * length for word in words_group]
@@ -50,7 +54,6 @@ def main():
         random.shuffle(word_chars)
         print('\n' + ''.join(word_chars) + ':\n')
         {print(key, value) for key, value in word_spaces.items()}
-        print(sub_words_grouped) # Remove
 
         # Take and process user guesses
         guess = input('\nEnter a guess: ')
