@@ -1,140 +1,141 @@
-PS C:\Users\10869\Documents\Projects\Python\wordgame> python3 wordgame.py
-Enter the range for word length (min, max): 3,5
+ NOTE: This is a .py file and not a .txt file because that's the only file type allowed in the submission
+ PS C:\Users\10869\Documents\Projects\Python\wordgame> python3 wordgame.py
+ Enter the range for word length (min, max): 3,5
 
-hcnai:
+ hcnai:
 
-3 ['---', '---', '---']
-4 ['----', '----']
-5 ['-----', '-----']
+ 3 ['---', '---', '---']
+ 4 ['----', '----']
+ 5 ['-----', '-----']
 
-Enter a guess: can
-Correct!
+ Enter a guess: can
+ Correct!
 
-ainch:
+ ainch:
 
-3 ['---', 'can', '---']
-4 ['----', '----']
-5 ['-----', '-----']
+ 3 ['---', 'can', '---']
+ 4 ['----', '----']
+ 5 ['-----', '-----']
 
-Enter a guess: acni
-Sorry, try again
+ Enter a guess: acni
+ Sorry, try again
 
-hcnai:
+ hcnai:
 
-3 ['---', 'can', '---']
-4 ['----', '----']
-5 ['-----', '-----']
+ 3 ['---', 'can', '---']
+ 4 ['----', '----']
+ 5 ['-----', '-----']
 
-Enter a guess: achni
-Sorry, try again
+ Enter a guess: achni
+ Sorry, try again
 
-ihacn:
+ ihacn:
 
-3 ['---', 'can', '---']
-4 ['----', '----']
-5 ['-----', '-----']
+ 3 ['---', 'can', '---']
+ 4 ['----', '----']
+ 5 ['-----', '-----']
 
-Enter a guess: china
-Correct!
+ Enter a guess: china
+ Correct!
 
-anich:
+ anich:
 
-3 ['---', 'can', '---']
-4 ['----', '----']
-5 ['-----', 'china']
+ 3 ['---', 'can', '---']
+ 4 ['----', '----']
+ 5 ['-----', 'china']
 
-Enter a guess: inch
-Correct!
+ Enter a guess: inch
+ Correct!
 
-hican:
+ hican:
 
-3 ['---', 'can', '---']
-4 ['----', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', '---']
+ 4 ['----', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: chin
-Correct!
+ Enter a guess: chin
+ Correct!
 
-hniac:
+ hniac:
 
-3 ['---', 'can', '---']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', '---']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: ach
-Sorry, try again
+ Enter a guess: ach
+ Sorry, try again
 
-ciahn:
+ ciahn:
 
-3 ['---', 'can', '---']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', '---']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: chi
-Correct!
+ Enter a guess: chi
+ Correct!
 
-chnai:
+ chnai:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: cha
-Sorry, try again
+ Enter a guess: cha
+ Sorry, try again
 
-cahin:
+ cahin:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: han
-Sorry, try again
+ Enter a guess: han
+ Sorry, try again
 
-ihcna:
+ ihcna:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: ain
-Sorry, try again
+ Enter a guess: ain
+ Sorry, try again
 
-nciah:
+ nciah:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: ach
-Sorry, try again
+ Enter a guess: ach
+ Sorry, try again
 
-cnhia:
+ cnhia:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: cai
-Sorry, try again
+ Enter a guess: cai
+ Sorry, try again
 
-ahcni:
+ ahcni:
 
-3 ['---', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['---', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: ani
-Correct!
+ Enter a guess: ani
+ Correct!
 
-ihacn:
+ ihacn:
 
-3 ['ani', 'can', 'chi']
-4 ['chin', 'inch']
-5 ['-----', 'china']
+ 3 ['ani', 'can', 'chi']
+ 4 ['chin', 'inch']
+ 5 ['-----', 'china']
 
-Enter a guess: chain
-Correct!
-['ani', 'can', 'chi', 'chin', 'inch', 'chain', 'china']
+ Enter a guess: chain
+ Correct!
+ ['ani', 'can', 'chi', 'chin', 'inch', 'chain', 'china']
 
-Good job! You got all the words.
+ Good job! You got all the words.
