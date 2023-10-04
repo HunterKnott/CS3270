@@ -1,6 +1,6 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 from itertools import groupby # Use to sort permutations by length
-from random import choice, shuffle
+import random
 from collections import Counter # Use when checking subsets
 
 def read_words(file_name):
@@ -19,8 +19,32 @@ def main(length_range = None):
         min_length, max_length = 3, 15 # Default range
     
     word = ' '
+    random.seed()
+    while len(word) < min_length or len(word) > max_length:
+        word = random.choice(words)
+    word_chars = list(word)
+
+    sub_words = []
+    for w in words:
+        is_sub = True
+        word_char_loop = word_chars.copy()
+        for c in w:
+            if c in word_char_loop:
+                word_char_loop.remove(c)
+            else:
+                is_sub = False
+        if is_sub and min_length <= len(w) <= max_length:
+            sub_words.append(w)
+
+    sub_words.sort(key=len)
+    sub_words_grouped = {k: list(g) for k, g in groupby(sub_words, key=len)}
+
+    print(f'The word is {word}')
+    for length, words_group in sub_words_grouped.items():
+        print(f'Words of length {length}:')
+        for word in words_group:
+            print(word)
 
 if __name__ == "__main__":
-    # input_word = input("Enter the range for word length (min, max): ")
-    # main(length_range)
-    main()
+    length_range = input("Enter the range for word length (min, max): ")
+    main(length_range)
