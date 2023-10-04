@@ -33,27 +33,32 @@ def main(length_range = None):
     sub_words.sort(key=len)
     sub_words_grouped = {key: list(group) for key, group in groupby(sub_words, key=len)}
     
-    # Print scrambled word
-    random.shuffle(word_chars)
-    print('\n' + ''.join(word_chars) + ':\n')
-    
     word_spaces = {}
     for length, words_group in sub_words_grouped.items():
         word_spaces[length] = ['-' * length for word in words_group]
-    {print(key, value) for key, value in word_spaces.items()}
-    print(sub_words_grouped)
-
-    # Take and process user guesses
-    guess = input('\nEnter a guess: ')
-    if guess in sub_words:
-        print('Correct!')
-        word_spaces[len(guess)][sub_words_grouped.get(len(guess)).index(guess)] = guess
+    # {print(key, value) for key, value in word_spaces.items()}
+    
+    while word_spaces != sub_words_grouped:
+        # Print scrambled word
+        random.shuffle(word_chars)
+        print('\n' + ''.join(word_chars) + ':\n')
         {print(key, value) for key, value in word_spaces.items()}
-    elif guess == 'q':
-        print('Exiting game...')
-        exit()
-    else:
-        print('Sorry, try again')
+        print(sub_words_grouped) # Remove
+
+        # Take and process user guesses
+        guess = input('\nEnter a guess: ')
+        if guess in sub_words:
+            print('Correct!')
+            word_spaces[len(guess)][sub_words_grouped.get(len(guess)).index(guess)] = guess
+        elif guess == 'q':
+            print('Exiting game...')
+            exit()
+        else:
+            print('Sorry, try again')
+
+    print('\n')
+    {print(key, value) for key, value in word_spaces.items()}
+    print('\nGood job! You got all the words.')
 
 if __name__ == "__main__":
     length_range = input("Enter the range for word length (min, max): ")
