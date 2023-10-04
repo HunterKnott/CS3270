@@ -12,16 +12,14 @@ def read_words(file_name):
     return lines
 
 def main(length_range = None):
-    words = read_words('words.txt')
     if length_range:
         min_length, max_length = map(int, length_range.split(','))
     else:
         min_length, max_length = 3, 15 # Default range
-    
-    word = ' '
-    random.seed()
-    while len(word) < min_length or len(word) > max_length:
-        word = random.choice(words)
+
+    words = read_words('words.txt')
+    filter_words = [w for w in words if min_length <= len(w) <= max_length]
+    word = random.choice(filter_words)
     word_chars = list(word)
 
     sub_words = []
@@ -37,7 +35,7 @@ def main(length_range = None):
             sub_words.append(w)
 
     sub_words.sort(key=len)
-    sub_words_grouped = {k: list(g) for k, g in groupby(sub_words, key=len)}
+    sub_words_grouped = {key: list(group) for key, group in groupby(sub_words, key=len)}
 
     print(f'The word is {word}')
     for length, words_group in sub_words_grouped.items():
