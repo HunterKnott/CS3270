@@ -22,18 +22,6 @@ def main(length_range = None):
     word = random.choice(filter_words)
     word_chars = list(word)
 
-    # sub_words = []
-    # for w in words:
-    #     is_sub = True
-    #     word_char_copy = word_chars.copy()
-    #     for c in w:
-    #         if c in word_char_copy:
-    #             word_char_copy.remove(c)
-    #         else:
-    #             is_sub = False
-    #     if is_sub and min_length <= len(w) <= max_length:
-    #         sub_words.append(w)
-
     from collections import Counter 
     sub_words = []
     word_counter = Counter(word_chars)
@@ -46,21 +34,30 @@ def main(length_range = None):
     sub_words_grouped = {key: list(group) for key, group in groupby(sub_words, key=len)}
 
     # Print all permutations
-    print(f'The word is {word}')
-    for length, words_group in sub_words_grouped.items():
-        print(f'Words of length {length}:')
-        [print(word) for word in words_group]
+    # print(f'The word is {word}')
+    # for length, words_group in sub_words_grouped.items():
+    #     print(f'Words of length {length}:')
+    #     [print(word) for word in words_group]
     
     # Print scrambled word
     random.shuffle(word_chars)
     print('\n' + ''.join(word_chars) + ':\n')
     
-    # Print word spaces
+    word_spaces = []
     for length, words_group in sub_words_grouped.items():
-        print('[' + ', '.join(["'" + '-' * length + "'" for word in words_group]) + ']')
-    
+        word_spaces.append('[' + ', '.join(["'" + '-' * length + "'" for word in words_group]) + ']')
+    for length in word_spaces:
+        print(length)
     print(sub_words)
+
     guess = input('\nEnter a guess: ')
+    if guess in sub_words:
+        print('Correct!')
+    elif guess == 'q':
+        print('Exiting game...')
+        exit()
+    else:
+        print('Sorry, try again')
 
 if __name__ == "__main__":
     length_range = input("Enter the range for word length (min, max): ")
