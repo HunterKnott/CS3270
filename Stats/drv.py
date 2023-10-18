@@ -35,7 +35,7 @@ plt.xticks([0, 1])
 # Set the labels and title
 plt.xlabel('Output Reading')
 plt.ylabel('Frequency')
-plt.title('Histogram of IC Pin Outputs')
+plt.title('Histogram of IC Pin Outputs (c-1)')
 
 plt.show()
 
@@ -47,7 +47,7 @@ plt.xticks([0, 1])
 # Set the labels and title
 plt.xlabel('Output Reading')
 plt.ylabel('Frequency Percentage')
-plt.title('Normalized Histogram of IC Pin Outputs')
+plt.title('Normalized Histogram of IC Pin Outputs (c-2)')
 plt.ylim(0, 1)
 
 plt.show()
@@ -93,7 +93,7 @@ plt.bar([0, 1], frequencies, color='#b55959', edgecolor='black')
 plt.xticks([0, 1], ['0', '1'])
 plt.xlabel("Output")
 plt.ylabel("Probability")
-plt.title("Approximated Probability Mass Function")
+plt.title("Approximated Probability Mass Function (c-4)")
 
 # PMF plot for actual PMF
 plt.subplot(1, 2, 2)
@@ -101,7 +101,7 @@ plt.bar([0, 1], pmf, color='#6ba4d6', edgecolor='black')
 plt.xticks([0, 1], ['0', '1'])
 plt.xlabel("Output")
 plt.ylabel("Probability")
-plt.title("Actual Probability Mass Function")
+plt.title("Actual Probability Mass Function (c-4)")
 
 plt.tight_layout()
 plt.show()
