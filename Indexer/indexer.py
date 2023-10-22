@@ -1,5 +1,7 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 import os
+import sys
+import webbrowser
 
 page_start = """
 <html>
@@ -56,6 +58,11 @@ def main():
     html_content += page_end
         
     print(item)
+
+    with open('file_list.html', 'w') as html_file:
+        html_file.write(html_content)
+    
+    webbrowser.open('file_list.html', new=2)
 
 if __name__ == '__main__':
     main()
