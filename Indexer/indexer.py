@@ -2,7 +2,6 @@
 import os
 import sys
 import webbrowser
-import urllib.parse
 
 page_start = """
 <html>
