@@ -22,7 +22,7 @@ page_end = """
 
 title_tmplt = """
 <h2>
-{0}
+Current Directory: {0}
 </h2>
 """
 
@@ -51,6 +51,7 @@ def main():
         current_directory = os.getcwd()
 
     html_content = page_start
+    html_content += title_tmplt.format(current_directory)
     for item in os.scandir(current_directory):
         if item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
             img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
