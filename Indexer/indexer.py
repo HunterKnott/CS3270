@@ -45,28 +45,31 @@ img_tmplt = """
 """
 
 def make_html(directory):
-    pass
-
-def main():
-    if len(sys.argv) > 1:
-        current_directory = sys.argv[1]
-    else:
-        current_directory = os.getcwd()
-
     html_content = page_start
-    html_content += title_tmplt.format(current_directory)
-    for item in os.scandir(current_directory):
+    html_content += title_tmplt.format(directory)
+    for item in os.scandir(directory):
         if item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
             img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
             html_content += img_info
-        else:
+        elif item.is_dir():
             link_info = link_tmplt.format(item.path, item.name)
             html_content += link_info
     html_content += page_end
 
-    with open('index.html', 'w') as html_file:
+    with open(os.path.join(directory, 'index.html'), 'w') as html_file:
         html_file.write(html_content)
     
+    for item in os.scandir(directory):
+        if item.is_dir():
+            make_html(item.path)
+
+def main():
+    if len(sys.argv) > 1:
+        root_directory = sys.argv[1]
+    else:
+        root_directory = os.getcwd()
+    
+    make_html(root_directory)
     webbrowser.open('index.html', new=2)
 
     # Regular Expressions may be used for exif data
