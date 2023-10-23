@@ -47,8 +47,6 @@ img_tmplt = """
 <div class="img_el">
 <a href={0}><img src="{0}" class="sm_img"></a>
 <br>
-{0}
-<br>
 {1}
 <br>
 {2}
@@ -64,17 +62,15 @@ def make_html(directory):
         if item.is_dir():
             link_info = link_tmplt.format(item.path, item.name)
             dir_sec += link_info
+            make_html(item.path)  # Recursively generate HTML for subdirectories
         elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+            filename = os.path.basename(item.name)
             img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
             img_sec += img_info
     html_content += dir_sec + img_sec + page_end
 
     with open(os.path.join(directory, 'index.html'), 'w') as html_file:
         html_file.write(html_content)
-    
-    for item in os.scandir(directory):
-        if item.is_dir():
-            make_html(item.path)
 
 def main():
     if len(sys.argv) > 1:
