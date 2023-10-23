@@ -15,7 +15,18 @@ page_start = """
 <body>
 """
 
+dir_section = """
+<div>
+"""
+
+img_section = """
+</div>
+<br>
+<div>
+"""
+
 page_end = """
+</div>
 </body>
 </html>
 """
@@ -46,15 +57,17 @@ img_tmplt = """
 
 def make_html(directory):
     html_content = page_start
+    dir_sec = dir_section
+    img_sec = img_section
     html_content += title_tmplt.format(directory)
     for item in os.scandir(directory):
-        if item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
-            img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
-            html_content += img_info
-        elif item.is_dir():
+        if item.is_dir():
             link_info = link_tmplt.format(item.path, item.name)
-            html_content += link_info
-    html_content += page_end
+            dir_sec += link_info
+        elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+            img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
+            img_sec += img_info
+    html_content += dir_sec + img_sec + page_end
 
     with open(os.path.join(directory, 'index.html'), 'w') as html_file:
         html_file.write(html_content)
