@@ -64,7 +64,6 @@ def make_html(directory):
             dir_sec += link_info
             make_html(item.path)  # Recursively generate HTML for subdirectories
         elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
-            filename = os.path.basename(item.name)
             img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
             img_sec += img_info
     html_content += dir_sec + img_sec + page_end
