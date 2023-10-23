@@ -70,7 +70,7 @@ def main():
         root_directory = os.getcwd()
     
     make_html(root_directory)
-    webbrowser.open('index.html', new=2)
+    webbrowser.open(os.path.join(root_directory, 'index.html'), new=2)
 
     # Regular Expressions may be used for exif data
 
