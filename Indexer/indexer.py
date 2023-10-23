@@ -5,7 +5,7 @@ import webbrowser
 import http.server
 import socketserver
 import exifread
-import reverse_geocoder
+import geo
 
 page_start = """
 <html>
