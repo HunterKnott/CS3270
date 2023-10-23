@@ -63,7 +63,7 @@ def make_html(directory):
             link_info = link_tmplt.format(item.path, item.name)
             dir_sec += link_info
             make_html(item.path)  # Recursively generate HTML for subdirectories
-        elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+        elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif', '.JPG', '.JPEG')):
             img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
             img_sec += img_info
     html_content += dir_sec + img_sec + page_end
@@ -76,6 +76,8 @@ def main():
         root_directory = sys.argv[1]
     else:
         root_directory = os.getcwd()
+    
+    os.chdir(root_directory)  # Change the current working directory to the specified directory
     
     make_html(root_directory)
     webbrowser.open(os.path.join(root_directory, 'index.html'), new=2)
