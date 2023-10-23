@@ -2,6 +2,7 @@
 import os
 import sys
 import webbrowser
+import urllib.parse
 
 page_start = """
 <html>
@@ -45,8 +46,11 @@ img_tmplt = """
 """
 
 def main():
-    # Specify the directory in the command line
-    current_directory = os.getcwd()
+    if len(sys.argv) > 1:
+        current_directory = sys.argv[1]
+    else:
+        current_directory = os.getcwd()
+
     html_content = page_start
     for item in os.scandir(current_directory):
         if item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif')):
@@ -56,13 +60,13 @@ def main():
             link_info = link_tmplt.format(item.path, item.name)
             html_content += link_info
     html_content += page_end
-        
-    print(item)
 
-    with open('file_list.html', 'w') as html_file:
+    with open('display.html', 'w') as html_file:
         html_file.write(html_content)
     
-    webbrowser.open('file_list.html', new=2)
+    webbrowser.open('display.html', new=2)
+
+    # Regular Expressions may be used for exif data
 
 if __name__ == '__main__':
     main()
