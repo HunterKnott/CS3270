@@ -2,6 +2,8 @@
 import os
 import sys
 import webbrowser
+import http.server
+import socketserver
 
 page_start = """
 <html>
@@ -53,6 +55,12 @@ img_tmplt = """
 </div>
 """
 
+PORT = 8000  # You can choose any available port
+
+class DirectoryViewer(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=os.getcwd(), **kwargs)
+
 def make_html(directory):
     html_content = page_start
     dir_sec = dir_section
@@ -60,11 +68,10 @@ def make_html(directory):
     html_content += title_tmplt.format(directory)
     for item in os.scandir(directory):
         if item.is_dir():
-            link_info = link_tmplt.format(item.path, item.name)
+            link_info = link_tmplt.format(item.name, item.name)
             dir_sec += link_info
-            make_html(item.path)  # Recursively generate HTML for subdirectories
         elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif', '.JPG', '.JPEG')):
-            img_info = img_tmplt.format(item.path, item.name, item.stat().st_size)
+            img_info = img_tmplt.format(item.name, item.name, item.stat().st_size)
             img_sec += img_info
     html_content += dir_sec + img_sec + page_end
 
@@ -76,13 +83,15 @@ def main():
         root_directory = sys.argv[1]
     else:
         root_directory = os.getcwd()
-    
-    os.chdir(root_directory)  # Change the current working directory to the specified directory
+
+    os.chdir(root_directory)
     
     make_html(root_directory)
-    webbrowser.open(os.path.join(root_directory, 'index.html'), new=2)
 
-    # Regular Expressions may be used for exif data
+    with socketserver.TCPServer(("", PORT), DirectoryViewer) as httpd:
+        print(f"Serving at port {PORT}")
+        webbrowser.open(f"http://localhost:{PORT}")
+        httpd.serve_forever()
 
 if __name__ == '__main__':
     main()
