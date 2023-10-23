@@ -44,6 +44,9 @@ img_tmplt = """
 </div>
 """
 
+def make_html(directory):
+    pass
+
 def main():
     if len(sys.argv) > 1:
         current_directory = sys.argv[1]
