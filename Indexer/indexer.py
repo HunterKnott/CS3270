@@ -61,10 +61,10 @@ def main():
             html_content += link_info
     html_content += page_end
 
-    with open('display.html', 'w') as html_file:
+    with open('index.html', 'w') as html_file:
         html_file.write(html_content)
     
-    webbrowser.open('display.html', new=2)
+    webbrowser.open('index.html', new=2)
 
     # Regular Expressions may be used for exif data
 
