@@ -4,7 +4,13 @@
 <style>
 .dirlink_el {font-size: 125%;}
 .sm_img {max-height: 200px; max-width: 200px;}
-.img_el {display: inline-block; padding-bottom: 15px; padding-right: 10px;}
+.img_container {
+  display: flex;  /* Use Flexbox for side-by-side layout */
+  align-items: center;  /* Vertically center the content in the containers */
+}
+.img_el {
+  padding-right: 10px;
+}
 </style>
 </head>
 <body>
@@ -24,26 +30,23 @@ Current Directory: C:\Users\10869\Documents\Projects\Python\Indexer\Pictures\One
 <div>
 
 <div class="img_el">
-<a href=castle.png><img src="castle.png" class="sm_img"></a>
-<br>
-castle.png
+  <a href=castle.png><img src="castle.png" class="sm_img"></a>
+  <p>castle.png</p>
+  <p><br></p>
 </div>
-<br>
 
 <div class="img_el">
-<a href=IMG_5350.JPG><img src="IMG_5350.JPG" class="sm_img"></a>
-<br>
-IMG_5350.JPG
+  <a href=IMG_5350.JPG><img src="IMG_5350.JPG" class="sm_img"></a>
+  <p>IMG_5350.JPG</p>
+  <p>2022:06:04 10:20:35<br>Durham, Oregon US</p>
 </div>
-<br>
-2022:06:04 10:20:35<br>Durham, Oregon US
+
 <div class="img_el">
-<a href=IMG_6674.JPG><img src="IMG_6674.JPG" class="sm_img"></a>
-<br>
-IMG_6674.JPG
+  <a href=IMG_6674.JPG><img src="IMG_6674.JPG" class="sm_img"></a>
+  <p>IMG_6674.JPG</p>
+  <p>2023:07:03 18:57:15<br>Lehi, Utah US</p>
 </div>
-<br>
-2023:07:03 18:57:15<br>Lehi, Utah US
+
 </div>
 </body>
 </html>

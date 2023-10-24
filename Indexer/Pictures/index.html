@@ -4,7 +4,13 @@
 <style>
 .dirlink_el {font-size: 125%;}
 .sm_img {max-height: 200px; max-width: 200px;}
-.img_el {display: inline-block; padding-bottom: 15px; padding-right: 10px;}
+.img_container {
+  display: flex;  /* Use Flexbox for side-by-side layout */
+  align-items: center;  /* Vertically center the content in the containers */
+}
+.img_el {
+  padding-right: 10px;
+}
 </style>
 </head>
 <body>
@@ -32,19 +38,17 @@ Current Directory: C:\Users\10869\Documents\Projects\Python\Indexer\Pictures
 <div>
 
 <div class="img_el">
-<a href=hummingbird.jpeg><img src="hummingbird.jpeg" class="sm_img"></a>
-<br>
-hummingbird.jpeg
+  <a href=hummingbird.jpeg><img src="hummingbird.jpeg" class="sm_img"></a>
+  <p>hummingbird.jpeg</p>
+  <p><br></p>
 </div>
-<br>
 
 <div class="img_el">
-<a href=IMG_5407.JPG><img src="IMG_5407.JPG" class="sm_img"></a>
-<br>
-IMG_5407.JPG
+  <a href=IMG_5407.JPG><img src="IMG_5407.JPG" class="sm_img"></a>
+  <p>IMG_5407.JPG</p>
+  <p>2022:06:06 19:08:40<br>Florence, Oregon US</p>
 </div>
-<br>
-2022:06:06 19:08:40<br>Florence, Oregon US
+
 </div>
 </body>
 </html>

@@ -13,7 +13,13 @@ page_start = """
 <style>
 .dirlink_el {font-size: 125%;}
 .sm_img {max-height: 200px; max-width: 200px;}
-.img_el {display: inline-block; padding-bottom: 15px; padding-right: 10px;}
+.img_container {
+  display: flex;  /* Use Flexbox for side-by-side layout */
+  align-items: center;  /* Vertically center the content in the containers */
+}
+.img_el {
+  padding-right: 10px;
+}
 </style>
 </head>
 <body>
@@ -49,17 +55,16 @@ parent_link_tmplt = """
 
 link_tmplt = """
 <div class="dirlink_el">
-<a href="{0}">{1}</a>
+<a href="{0}">{0}</a>
 </div>
 """
 
 img_tmplt = """
 <div class="img_el">
-<a href={0}><img src="{0}" class="sm_img"></a>
-<br>
-{1}
+  <a href={0}><img src="{0}" class="sm_img"></a>
+  <p>{0}</p>
+  <p>{1}</p>
 </div>
-<br>
 """
 
 class DirectoryViewer(http.server.SimpleHTTPRequestHandler):
@@ -74,18 +79,16 @@ def make_html(directory):
 
     for item in os.scandir(directory):
         if item.is_dir():
-            link_info = link_tmplt.format(item.name, item.name)
+            link_info = link_tmplt.format(item.name)
             dir_sec += link_info
         elif item.is_file() and item.name.endswith((".jpg", ".jpeg", ".png", ".gif", ".JPG", ".JPEG")):
-            img_info = img_tmplt.format(item.name, item.name)
-
             exif_data = get_exif_data(item)
             exif_info = f"{exif_data[0]}<br>"
             if exif_data[1] in ["N", "S", "E", "W"]:
                 location_string = geo.main((exif_data[2], exif_data[1]), (exif_data[4], exif_data[3]))
                 exif_info += f"{location_string}"
-
                 img_info += exif_info
+            img_info = img_tmplt.format(item.name, exif_info)
 
             img_sec += img_info
 
