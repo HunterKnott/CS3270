@@ -1,5 +1,6 @@
 import reverse_geocoder
 
+# Changes a coordinate string to a list of numeric values
 def process_coord(dms, ref):
     values = dms.strip("[]").split(",")
     num_values = []
@@ -16,13 +17,16 @@ def process_coord(dms, ref):
     
     return decimal_degrees
 
+# Returns coordinates given the a Decimal Degrees numeric value
 def get_location(dd):
     return reverse_geocoder.search(dd)
 
+# Returns a city, state/province, and country given coordinates
 def format_location(location):
     output = f"{location[0]['name']}, {location[0]['admin1']} {location[0]['cc']}"
     return output
 
+# Takes latitude and longitude information and returns a location
 def main(lat_tuple, long_tuple):
     lat_dd = process_coord(lat_tuple[0], lat_tuple[1])
     long_dd = process_coord(long_tuple[0], long_tuple[1])

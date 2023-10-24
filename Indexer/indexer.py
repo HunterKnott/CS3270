@@ -31,7 +31,6 @@ dir_section = """
 
 img_section = """
 </div>
-<br>
 <div>
 """
 
@@ -62,8 +61,10 @@ link_tmplt = """
 img_tmplt = """
 <div class="img_el">
   <a href={0}><img src="{0}" class="sm_img"></a>
-  <p>{0}</p>
-  <p>{1}</p>
+  <p>
+    {0}
+    {1}
+  </p>
 </div>
 """
 
@@ -71,12 +72,14 @@ class DirectoryViewer(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=os.getcwd(), **kwargs)
 
+# Generates HTML index files for directory and subdirectories
 def make_html(directory):
     html_content = page_start
     dir_sec = dir_section
     img_sec = img_section
     html_content += title_tmplt.format(directory)
 
+    # Determines if directory item is a subdirectory or an image to process
     for item in os.scandir(directory):
         if item.is_dir():
             link_info = link_tmplt.format(item.name)
@@ -87,9 +90,7 @@ def make_html(directory):
             if exif_data[1] in ["N", "S", "E", "W"]:
                 location_string = geo.main((exif_data[2], exif_data[1]), (exif_data[4], exif_data[3]))
                 exif_info += f"{location_string}"
-                img_info += exif_info
             img_info = img_tmplt.format(item.name, exif_info)
-
             img_sec += img_info
 
     html_content += dir_sec + img_sec + page_end
@@ -97,6 +98,7 @@ def make_html(directory):
     with open(os.path.join(directory, "index.html"), "w") as html_file:
         html_file.write(html_content)
 
+# Retrieves exif info from an image file for processing
 def get_exif_data(image_file):
     exif_data = {}
     exif_tags = ["EXIF DateTimeOriginal", "GPS GPSLatitudeRef", "GPS GPSLatitude", "GPS GPSLongitudeRef", "GPS GPSLongitude"]
@@ -117,6 +119,7 @@ def get_exif_data(image_file):
     
     return exif_tuple
 
+# Takes a command line argument to determine file path to generate
 def main():
     if len(sys.argv) > 1:
         root_directory = sys.argv[1]
@@ -126,6 +129,7 @@ def main():
     os.chdir(root_directory)
     make_html(root_directory)
 
+    # Opens a page in the browser to display the generated HTML
     PORT = 8000 
     with socketserver.TCPServer(("", PORT), DirectoryViewer) as httpd:
         print(f"Serving at port {PORT}")
