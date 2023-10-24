@@ -76,16 +76,14 @@ def make_html(directory):
         if item.is_dir():
             link_info = link_tmplt.format(item.name, item.name)
             dir_sec += link_info
-        elif item.is_file() and item.name.endswith(('.jpg', '.jpeg', '.png', '.gif', '.JPG', '.JPEG')):
+        elif item.is_file() and item.name.endswith((".jpg", ".jpeg", ".png", ".gif", ".JPG", ".JPEG")):
             img_info = img_tmplt.format(item.name, item.name)
 
             exif_data = get_exif_data(item)
-            if exif_data:
-                exif_info = f"EXIF DateTime: {exif_data[0]}<br>"
-                exif_info += f"GPS Latitude Ref: {exif_data[1]}<br>"
-                exif_info += f"GPS Latitude: {exif_data[2]}<br>"
-                exif_info += f"GPS Longitude Ref: {exif_data[3]}<br>"
-                exif_info += f"GPS Longitude: {exif_data[4]}<br>"
+            exif_info = f"{exif_data[0]}<br>"
+            if exif_data[1] in ["N", "S", "E", "W"]:
+                location_string = geo.main((exif_data[2], exif_data[1]), (exif_data[4], exif_data[3]))
+                exif_info += f"{location_string}"
 
                 img_info += exif_info
 
@@ -93,7 +91,7 @@ def make_html(directory):
 
     html_content += dir_sec + img_sec + page_end
 
-    with open(os.path.join(directory, 'index.html'), 'w') as html_file:
+    with open(os.path.join(directory, "index.html"), "w") as html_file:
         html_file.write(html_content)
 
 def get_exif_data(image_file):
@@ -136,5 +134,5 @@ def main():
         httpd.server_close()
         print("Server stopped.")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

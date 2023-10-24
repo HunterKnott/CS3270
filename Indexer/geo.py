@@ -1,5 +1,4 @@
 import reverse_geocoder
-import indexer
 
 def process_coord(dms, ref):
     values = dms.strip("[]").split(",")
@@ -24,12 +23,11 @@ def format_location(location):
     output = f"{location[0]['name']}, {location[0]['admin1']} {location[0]['cc']}"
     return output
 
-if __name__ == "__main__":
-    lat = "[44, 8, 307/100]"
-    lat_ref = "N"
-    long = "[124, 7, 121/5]"
-    long_ref = "W"
-    lat_dd = process_coord(lat, lat_ref)
-    long_dd = process_coord(long, long_ref)
+def main(lat_tuple, long_tuple):
+    lat_dd = process_coord(lat_tuple[0], lat_tuple[1])
+    long_dd = process_coord(long_tuple[0], long_tuple[1])
     loc = get_location((lat_dd, long_dd))
-    format_location(loc)
+    return format_location(loc)
+
+if __name__ == "__main__":
+    main()
