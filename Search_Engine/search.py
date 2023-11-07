@@ -1,11 +1,12 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 import pprint
 import re
+import sys
 import urllib.parse, urllib.request
 
+# Holds all text and associated link contents of a specified url and search depth
 class HayStack():
     def __init__(self, start_url, search_depth=3):
-        # crawls starting from the given web page, finding and following all embedded webpage links until it reaches 
         self.start_url = start_url
         self.search_depth = search_depth
         self.index = {}
@@ -13,10 +14,12 @@ class HayStack():
         self.get_pages(start_url, search_depth)
         self.compute_ranks(self.graph)
 
+    # Function that takes a starting url and search depth to crawl a website and return all page references
     def get_pages(self, start_url, depth):
         if depth == 0:
             return
         try:
+            # Provided urllib.request from urlopen.py file
             req = urllib.request.Request(start_url, headers={'User-Agent' : 'XY'})
             response = urllib.request.urlopen(req)
             page_content = response.read().decode()
@@ -24,7 +27,8 @@ class HayStack():
             print(f"There was an error getting {start_url}: {Exception}")
             return
         
-        words = re.findall(r'\b[a-z\']+|[A-Z]\b', page_content.lower()) # Runs of alphabetic characters and apostrophes
+        # RegEx to get runs of alphabetic characters and apostrophes
+        words = re.findall(r'\b[a-z\']+|[A-Z]\b', page_content.lower())
         words = set(words)
 
         for word in words:
@@ -32,6 +36,7 @@ class HayStack():
                 self.index[word] = set()
             self.index[word].add(start_url)
         
+        # RegEx to get all links on the same page as each word
         self.graph[start_url] = set()
         links = re.findall(r'href=["\'](http[s]?://.*?)["\']', page_content)
         for link in links:
@@ -39,6 +44,7 @@ class HayStack():
                 self.graph[start_url].add(link)
                 self.get_pages(link, depth - 1)
 
+    # Given function that calculates the rank of each page
     def compute_ranks(self, graph):
         d = 0.85     # probability that surfer will bail
         numloops = 10
@@ -59,6 +65,7 @@ class HayStack():
             ranks = newranks
         self.ranks = ranks
     
+    # Takes a word as a search key and outputs the webpages that contain that word in rank order
     def lookup(self, search_key):
         search_key = search_key.lower()
         if search_key in self.index:
@@ -68,20 +75,25 @@ class HayStack():
         else:
             return set()
 
+# Test driver code to print results of a website crawl
+# Provided test has been put inside a file writing statement
 def main():
     engine = HayStack('http://roversgame.net/cs3270/page1.html',4)
-    for w in ['pages','links','you','have','I']:
-        print(w)
-        pprint.pprint(engine.lookup(w))
-    print()
-    print('index:')
-    pprint.pprint(engine.index)
-    print()
-    print('graph:')
-    pprint.pprint(engine.graph)
-    print()
-    print('ranks:')
-    pprint.pprint({page:round(rank,4) for page,rank in engine.ranks.items()})
+    with open('results.txt', 'w') as output_file:
+        sys.stdout = output_file
+        for w in ['pages','links','you','have','I']:
+            print(w)
+            pprint.pprint(engine.lookup(w))
+        print()
+        print('index:')
+        pprint.pprint(engine.index)
+        print()
+        print('graph:')
+        pprint.pprint(engine.graph)
+        print()
+        print('ranks:')
+        pprint.pprint({page:round(rank,4) for page,rank in engine.ranks.items()})
+    sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
     main()
