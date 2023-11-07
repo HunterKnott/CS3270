@@ -1,10 +1,46 @@
 '''Hunter Knott, CS 3270, Utah Valley University'''
 import pprint
-import urllib.request
+import re
+import urllib.parse, urllib.request
 
 class HayStack():
-    def __init__(self):
-        pass
+    def __init__(self, start_url, search_depth=3):
+        # crawls starting from the given web page, finding and following all embedded webpage links until it reaches 
+        # the maximum search depth and computes the following data items
+        self.start_url = start_url
+        self.search_depth = search_depth
+        self.index = {}
+        self.graph = {}
+        self.get_pages(start_url, search_depth)
+        self.compute_ranks(self.graph)
+
+    def get_pages(self, start_url, depth):
+        if depth == 0:
+            return
+        try:
+            req = urllib.request.Request(start_url, headers={'User-Agent' : 'XY'})
+            response = urllib.request.urlopen(req)
+            page_content = response.read().decode()
+            print(response.read().decode())
+        except:
+            print(f"There was an error getting {start_url}: {Exception}")
+            return
+        
+        words = re.findall(r'\b[a-z\']+\b', page_content.lower()) # Runs of alphabetic characters and apostrophes
+        words = set(words)  # Remove duplicates
+
+        for word in words:
+            if word not in self.index:
+                self.index[word] = [start_url]
+            else:
+                self.index[word].append(start_url)
+        
+        self.graph[start_url] = []
+        links = re.findall(r'href=["\'](http[s]?://.*?)["\']', page_content)
+        for link in links:
+            if link not in self.graph[start_url]:
+                self.graph[start_url].append(link)
+                self.get_pages(link, depth - 1)
 
     def compute_ranks(self, graph):
         d = 0.85     # probability that surfer will bail
@@ -25,6 +61,10 @@ class HayStack():
                 newranks[page] = newrank
             ranks = newranks
         self.ranks = ranks
+    
+    def lookup(self, search_key):
+        # Takes a word as a search key and outputs the webpages that contain that word in rank order, highest to lowest.
+        pass
 
 def main():
     engine = HayStack('http://roversgame.net/cs3270/page1.html',4)
