@@ -6,7 +6,6 @@ import urllib.parse, urllib.request
 class HayStack():
     def __init__(self, start_url, search_depth=3):
         # crawls starting from the given web page, finding and following all embedded webpage links until it reaches 
-        # the maximum search depth and computes the following data items
         self.start_url = start_url
         self.search_depth = search_depth
         self.index = {}
@@ -21,25 +20,23 @@ class HayStack():
             req = urllib.request.Request(start_url, headers={'User-Agent' : 'XY'})
             response = urllib.request.urlopen(req)
             page_content = response.read().decode()
-            print(response.read().decode())
         except:
             print(f"There was an error getting {start_url}: {Exception}")
             return
         
-        words = re.findall(r'\b[a-z\']+\b', page_content.lower()) # Runs of alphabetic characters and apostrophes
-        words = set(words)  # Remove duplicates
+        words = re.findall(r'\b[a-z\']+|[A-Z]\b', page_content.lower()) # Runs of alphabetic characters and apostrophes
+        words = set(words)
 
         for word in words:
             if word not in self.index:
-                self.index[word] = [start_url]
-            else:
-                self.index[word].append(start_url)
+                self.index[word] = set()
+            self.index[word].add(start_url)
         
-        self.graph[start_url] = []
+        self.graph[start_url] = set()
         links = re.findall(r'href=["\'](http[s]?://.*?)["\']', page_content)
         for link in links:
             if link not in self.graph[start_url]:
-                self.graph[start_url].append(link)
+                self.graph[start_url].add(link)
                 self.get_pages(link, depth - 1)
 
     def compute_ranks(self, graph):
@@ -63,8 +60,13 @@ class HayStack():
         self.ranks = ranks
     
     def lookup(self, search_key):
-        # Takes a word as a search key and outputs the webpages that contain that word in rank order, highest to lowest.
-        pass
+        search_key = search_key.lower()
+        if search_key in self.index:
+            results = set(self.index[search_key])
+            results = sorted(results, key=lambda url: -self.ranks.get(url, 0))
+            return set(results)
+        else:
+            return set()
 
 def main():
     engine = HayStack('http://roversgame.net/cs3270/page1.html',4)
