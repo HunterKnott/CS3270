@@ -377,6 +377,11 @@ def hex_input_check(sequence):
         print("The input can only have numbers 0-9 and letters A-F")
     return sequence
 
+def string_to_hex(str):
+    hex_result = ''.join(hex(ord(char))[2:] for char in str)
+    print('String hex representation: ' + hex_result)
+    return hex_result
+
 def main():
     '''Produces encypted text based on an initial plain-text value and key,
         and then accepts new values to encrypt'''
@@ -385,17 +390,18 @@ def main():
     subkeys(binary_k)
     binary_m = hex_to_binary(m)
     encode(binary_m)
-    print('Original text:' + m)
-    print('Original key:' + k)
-    print('Encrypted text:' + c)
+    # print('Original text:' + m)
+    # print('Original key:' + k)
+    # print('Encrypted text:' + c)
 
+    print('Enter an 8-character string to encode:')
+    start_string = input()
+    m = string_to_hex(start_string)
     print('Enter a 16-character hex value for a key:')
     k = input()
     k = hex_input_check(k.upper())
     binary_k = hex_to_binary(k)
     subkeys(binary_k)
-    print('Enter a 16-character hex value to encrypt:')
-    m = input()
     m = hex_input_check(m.upper())
     binary_m = hex_to_binary(m)
     encode(binary_m)
