@@ -1,5 +1,6 @@
 # Hunter Knott, CS 3530, Utah Valley University
 import psycopg2 # sqlalchemy is another way to do this
+import sys
 import csv
 import json
 
@@ -16,12 +17,12 @@ def initial_query(cursor):
         print("major = ", row[3])
         print("credits  = ", row[4], "\n")
 
-def id_query(cursor):
-    pg_select_by_id = """
+def id_query(cursor, value):
+    pg_select_by_id = f"""
     SELECT s.stuID, s.lastName, s.firstName, m.majorDesc, s.credits
     FROM Students s
     Join Majors m ON s.majorID = m.majorID
-    WHERE stuId = 100001""" # Edit this line for different IDs
+    WHERE stuId = {value}"""
     cursor.execute(pg_select_by_id)
     student_record = cursor.fetchone()
     
@@ -31,12 +32,12 @@ def id_query(cursor):
     else:
         print("No records found for the given ID.")
 
-def lastname_query(cursor):
-    pg_select_by_lastname = """
+def lastname_query(cursor, value):
+    pg_select_by_lastname = f"""
     SELECT s.stuID, s.lastName, s.firstName, m.majorDesc, s.credits
     FROM Students s
     JOIN Majors m ON s.majorID = m.majorID
-    WHERE lastName = 'Veloz'""" # Edit this line for different last names
+    WHERE lastName = '{value}'"""
     cursor.execute(pg_select_by_lastname)
     student_records = cursor.fetchall()
 
@@ -46,12 +47,16 @@ def lastname_query(cursor):
     else:
         print("No records found for the given last name.")
 
-def major_query(cursor):
-    pg_select_by_major = """
+def major_query(cursor, value):
+    if value not in ['1', '2', '3', '4']:
+        print('Input invalid. Possible input values: 1, 2, 3, 4')
+        return
+
+    pg_select_by_major = f"""
         SELECT s.stuID, s.lastName, s.firstName, m.majorDesc, s.credits
         FROM Students s
         JOIN Majors m ON s.majorID = m.majorID
-        WHERE s.majorId = 4""" # Edit this line for different majors
+        WHERE s.majorId = {value}"""
     cursor.execute(pg_select_by_major)
     student_records = cursor.fetchall()
     
@@ -61,12 +66,24 @@ def major_query(cursor):
     else:
         print("No records found for the given major.")
 
-def rank_query(cursor):
-    pg_select_by_rank = """
+def rank_query(cursor, value):
+    if value.lower() == 'freshman':
+        query = 'BETWEEN 0 AND 29'
+    elif value.lower() == 'sophomore':
+        query = 'BETWEEN 30 AND 59'
+    elif value.lower() == 'junior':
+        query = 'BETWEEN 60 AND 89'
+    elif value.lower() == 'Senior':
+        query = '> 90'
+    else:
+        print('Input invalid. Possible input values: Freshman, Sophomore, Junior, Senior')
+        return
+
+    pg_select_by_rank = f"""
         SELECT s.stuID, s.lastName, s.firstName, m.majorDesc, s.credits
         FROM Students s
         JOIN Majors m ON s.majorID = m.majorID
-        WHERE s.credits BETWEEN 60 AND 89""" # Edit this line for different ranks
+        WHERE s.credits {query}"""
     cursor.execute(pg_select_by_rank)
     student_records = cursor.fetchall()
 
@@ -76,7 +93,7 @@ def rank_query(cursor):
     else:
         print("No records found for the given rank.")
     
-    # Freshman: 1-29 credits
+    # Freshman: 0-29 credits
     # Sophomore: 30-59
     # Junior: 60-89
     # Senior: 90+
@@ -127,12 +144,30 @@ def main():
         # Docker must be running for this to work
         cursor = connection.cursor()
 
-        # Uncomment these lines to test queries
-        # initial_query(cursor)
-        # id_query(cursor)
-        # lastname_query(cursor)
-        major_query(cursor)
-        # rank_query(cursor)
+        if len(sys.argv) == 3:
+            query_type = sys.argv[1].lower()
+            query_value = sys.argv[2]
+
+            if query_type == 'id':
+                id_query(cursor, query_value) # Ex. 100001
+            elif query_type == 'lastname':
+                lastname_query(cursor, query_value) # Ex. Veloz
+            elif query_type == 'major':
+                major_query(cursor, query_value) # Ex. 4
+            elif query_type == 'rank':
+                rank_query(cursor, query_value) # Ex. Junior
+            elif query_type == 'initial':
+                initial_query(cursor) # Doesn't use second parameter
+            else:
+                print('Input invalid. Possible input values: Id, Lastname, Major, Rank, Initial')
+        
+        elif len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1].lower() == 'initial'):
+            initial_query(cursor)
+        else:
+            print('Command line input invalid. Must provide both a query type and search value, nothing else')
+            print('Possible query types: Id, Lastname, Major, Rank, Initial')
+        
+
 
     except (Exception, psycopg2.Error) as error :
         print ("Error while fetching data from PostgreSQL", error)
